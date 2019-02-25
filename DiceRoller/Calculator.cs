@@ -60,19 +60,15 @@ namespace DiceRoller
                 }
             }
 
-            double result;
-
-            // If everything worked, there should only be one value left in the stack which is the evaluation of the equation
-            if (S.Count == 1)
+            if (S.Count != 1)
             {
-                result = S.Pop();
+                throw new ArgumentException("Incomplete Equation.  Mismatched operators and operands.");
+                
             }
             else
             {
-                throw new ArgumentException("Incomplete Equation.  Mismatched operators and operands.");
+                return S.Pop();
             }
-
-            return result;
         }
     }
 }

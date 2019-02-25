@@ -10,9 +10,9 @@ namespace DiceRoller.Tests
         [InlineData("1+4*3", "1 4 3 * +")]
         [InlineData("1*4+3", "1 4 * 3 +")]
         [InlineData("((15/(7-(1+1)))*3)-(2+(1+1))", "15 7 1 1 + - / 3 * 2 1 1 + + -")]
-        public void RPN_ValidStack(string infix, string expected)
+        public void RPN_ValidStack(string infixEquation, string expected)
         {
-            var result = EquationConversion.ReversePolishNotation(infix);
+            var result = EquationConversion.ReversePolishNotation(infixEquation);
 
             string actual = String.Join(" ", result.ToArray());
 
@@ -24,9 +24,9 @@ namespace DiceRoller.Tests
         [InlineData("12+p")]
         [InlineData("1+4*3)")]
         [InlineData("1+(4*3")]
-        public void RPN_ThrowsException(string infix)
+        public void RPN_ThrowsException(string infixEquation)
         {
-            Assert.Throws<ArgumentException>(() => EquationConversion.ReversePolishNotation(infix));
+            Assert.Throws<ArgumentException>(() => EquationConversion.ReversePolishNotation(infixEquation));
         }
 
 
@@ -34,9 +34,9 @@ namespace DiceRoller.Tests
         [InlineData("1+4*3", 5)]
         [InlineData("1*4+3", 5)]
         [InlineData("1*(4+3)", 7)]
-        public void EquationToList(string equation, int expected)
+        public void EquationToList(string infixEquation, int expected)
         {
-            var result = EquationConversion.CommandToList(equation);
+            var result = EquationConversion.EquationToList(infixEquation);
             Assert.Equal<int>(expected, result.Count);
         }
     }

@@ -19,22 +19,22 @@ namespace DiceRoller
             { ")", 0 },
         };
 
-        public static Queue<string> ReversePolishNotation(string command)
+        public static Queue<string> ReversePolishNotation(string infixEquation)
         {
-            return ReversePolishNotation(CommandToList(command));
+            return ReversePolishNotation(EquationToList(infixEquation));
         }
 
         /// <summary>
-        /// Use the shunting-yard algorithm to convert the command into Reverse Polish Notation (RPN)
+        /// Use the shunting-yard algorithm to convert the infix equation into Reverse Polish Notation (RPN)
         /// </summary>
-        /// <param name="command">Equation in Infix notation</param>
+        /// <param name="infixEquation">Equation in Infix notation</param>
         /// <returns>Equation in Reverse Polish notation</returns>
-        public static Queue<string> ReversePolishNotation(List<string> command)
+        public static Queue<string> ReversePolishNotation(List<string> infixEquation)
         {
             var Q = new Queue<string>();
             var S = new Stack<string>();
 
-            foreach (var item in command)
+            foreach (var item in infixEquation)
             {
                 if (Double.TryParse(item, out double result))
                 {
@@ -94,16 +94,16 @@ namespace DiceRoller
             return Q;
         }
 
-        public static List<string> CommandToList(string command)
+        public static List<string> EquationToList(string infixEquation)
         {
-            command.Replace(" ", "");
+            infixEquation.Replace(" ", "");
 
             foreach (string key in Precedence.Keys)
             {
-                command = command.Replace(key, $" {key} ");
+                infixEquation = infixEquation.Replace(key, $" {key} ");
             }
 
-            return command.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList<string>();
+            return infixEquation.Split(" ", StringSplitOptions.RemoveEmptyEntries).ToList<string>();
         }
     }
 }

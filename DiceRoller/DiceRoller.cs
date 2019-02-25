@@ -11,19 +11,8 @@ namespace DiceRoller
         public static string ValidDiceRollPattern = @"^(\d+)d(\d+)k?([l|h]?)(\d?)$";
         public static string ValidCharacterPattern = @"^[0-9dkhl+-\/\*\(\)]*$";
 
-        public static double Roll(string command)
+        public static double Roll(string infixEquation)
         {
-            //char[] operators = { '+', '-', '*', '/' };
-
-
-            //foreach (var op in operators)
-            //{
-
-            //}
-
-            //var bob = string.Split(command, );
-
-
             return 0;
         }
     }
