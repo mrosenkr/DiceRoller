@@ -1,11 +1,12 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Threading.Tasks;
 
 namespace DiceRoller
 {
     internal static class Calculator
     {
-        public static double Evaluate(string equation)
+        public static RollResult Evaluate(string equation)
         {
             var rpn = EquationConversion.ReversePolishNotation(equation);
             Stack<double> S = new Stack<double>();
@@ -67,7 +68,8 @@ namespace DiceRoller
             }
             else
             {
-                return S.Pop();
+                var result = new RollResult(S.Pop());
+                return result;
             }
         }
     }

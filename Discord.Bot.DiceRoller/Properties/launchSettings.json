@@ -1,0 +1,10 @@
+{
+  "profiles": {
+    "Discord.Bot.DiceRoller": {
+      "commandName": "Project",
+      "environmentVariables": {
+        "ASPCORE_ENVIRONMENT": "Development"
+      }
+    }
+  }
+}

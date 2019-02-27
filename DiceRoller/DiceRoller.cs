@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Collections.Generic;
 using System.Runtime.CompilerServices;
-using System.Text;
 
 [assembly: InternalsVisibleTo("DiceRoller.Tests")]
 namespace DiceRoller
@@ -11,9 +9,22 @@ namespace DiceRoller
         public static string ValidDiceRollPattern = @"^(\d+)d(\d+)k?([l|h]?)(\d?)$";
         public static string ValidCharacterPattern = @"^[0-9dkhl+-\/\*\(\)]*$";
 
-        public static double Roll(string infixEquation)
+        public static RollResult Roll(string infixEquation)
         {
-            return 0;
+            RollResult result = new RollResult();
+
+            try
+            {
+                result = Calculator.Evaluate(infixEquation);
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine(ex.Message);
+                result.Error = true;
+                result.ErrorMessage = "Unexpected error";
+            }
+
+            return result;
         }
     }
 }

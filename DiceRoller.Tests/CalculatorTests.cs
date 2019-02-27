@@ -23,7 +23,7 @@ namespace DiceRoller.Tests
         {
             var result = Calculator.Evaluate(infixEquation);
 
-            Assert.Equal<double>(expected, result);
+            Assert.Equal<double>(expected, result.Answer);
         }
 
         [Theory]
