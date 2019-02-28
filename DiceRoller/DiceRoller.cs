@@ -1,7 +1,5 @@
 ﻿using System;
-using System.Runtime.CompilerServices;
 
-[assembly: InternalsVisibleTo("DiceRoller.Tests")]
 namespace DiceRoller
 {
     public static class DiceRoller
