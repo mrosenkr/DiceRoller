@@ -8,7 +8,6 @@ namespace DiceRoller
     {
         public static Dictionary<string, int> Precedence = new Dictionary<string, int>()
         {
-            { "d", 7 },
             { "^", 6 },
             { "%", 5 },
             { "*", 5 },

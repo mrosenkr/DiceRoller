@@ -1,9 +1,9 @@
-﻿using Discord.Commands;
+﻿using DiceRoller;
+using Discord.Commands;
 using Discord.WebSocket;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using System;
-using System.IO;
 using System.Reflection;
 using System.Threading.Tasks;
 
@@ -16,6 +16,7 @@ namespace Discord.Bot.DiceRoller
         private DiscordSocketClient _client;
         private CommandService _commands;
         private IServiceProvider _services;
+        private Dice _dice;
 
         public async Task RunBotAsync()
         {
@@ -33,10 +34,12 @@ namespace Discord.Bot.DiceRoller
 
             _client = new DiscordSocketClient();
             _commands = new CommandService();
+            _dice = new Dice();
 
             _services = new ServiceCollection()
                 .AddSingleton(_client)
                 .AddSingleton(_commands)
+                .AddSingleton(_dice)
                 .BuildServiceProvider();
 
             _client.Log += Log;
@@ -49,6 +52,8 @@ namespace Discord.Bot.DiceRoller
 
             Console.ReadKey();
             //await Task.Delay(-1);
+
+            _dice.Dispose();
 
             await _client.StopAsync();
 
