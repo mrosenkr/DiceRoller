@@ -13,11 +13,11 @@ namespace DiceRoller.Tests
 
         [Theory]
         [InlineData("1d4+2", 3, 6)]
-        public void ValidEquation(string infixEquation, int min, int max)
+        public void ValidEquation(string infixEquation, double min, double max)
         {
             var result = _dice.Roll(infixEquation);
-            
-            Assert.InRange<int>((int)result.Answer, min, max);
+
+            Assert.InRange<double>(result.Answer, min, max);
         }
     }
 }

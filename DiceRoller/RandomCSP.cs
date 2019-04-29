@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Security.Cryptography;
 
 namespace DiceRoller
@@ -12,7 +13,7 @@ namespace DiceRoller
             _rng = new RNGCryptoServiceProvider();
         }
 
-        public int RollDice(int dice, int sides)
+        public List<int> RollDice(int dice, int sides)
         {
             if (dice <= 0)
             {
@@ -23,7 +24,7 @@ namespace DiceRoller
                 throw new ArgumentOutOfRangeException("sides");
             }
 
-            int result = 0;
+            var result = new List<int>(dice);
             byte[] randomNumber = new byte[1];
             for (int i = 0; i < dice; i++)
             {
@@ -33,17 +34,10 @@ namespace DiceRoller
 
                 } while (!IsFairRoll(randomNumber[0], sides));
 
-                result += (randomNumber[0] % sides) + 1;
+                result.Add((randomNumber[0] % sides) + 1);
             }
 
             return result;
-        }
-
-        public RollResult RollDice(RollOptions options)
-        {
-            var result = RollDice(options.dice, options.sides);
-            RollResult rollResult = new RollResult(result);
-            return rollResult;
         }
 
         private bool IsFairRoll(byte roll, int numberSides)

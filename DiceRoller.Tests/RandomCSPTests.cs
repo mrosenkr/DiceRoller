@@ -1,4 +1,5 @@
-﻿using System;
+﻿using System.Linq;
+using System;
 using Xunit;
 
 namespace DiceRoller.Tests
@@ -29,7 +30,7 @@ namespace DiceRoller.Tests
         {
             var result = _roller.RollDice(1, sides);
 
-            Assert.InRange<int>(result, 1, sides);
+            Assert.InRange<int>(result.Sum(), 1, sides);
         }
 
         [Theory]
@@ -38,9 +39,9 @@ namespace DiceRoller.Tests
         [InlineData(2000000, 4)]
         public void RollManyDice(int dice, int sides)
         {
-            int result = _roller.RollDice(dice, sides);
+            var result = _roller.RollDice(dice, sides);
 
-            Assert.InRange<int>(result, dice, dice * sides);
+            Assert.InRange<int>(result.Sum(), dice, dice * sides);
         }
     }
 }

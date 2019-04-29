@@ -5,7 +5,7 @@ namespace DiceRoller
 {
     internal static class Calculator
     {
-        public static RollResult Evaluate(string equation)
+        public static double Evaluate(string equation)
         {
             var rpn = EquationConversion.ReversePolishNotation(equation);
             Stack<double> S = new Stack<double>();
@@ -67,8 +67,7 @@ namespace DiceRoller
             }
             else
             {
-                var result = new RollResult(S.Pop());
-                return result;
+                return S.Pop();
             }
         }
     }

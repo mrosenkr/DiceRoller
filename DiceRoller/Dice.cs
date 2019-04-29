@@ -1,11 +1,12 @@
 ﻿using System;
+using System.Linq;
 using System.Text.RegularExpressions;
 
 namespace DiceRoller
 {
     public class Dice : IDisposable
     {
-        public static string ValidDiceRollPattern = @"(\d+)d(\d+)(?>k?(?'keep'[l|h]?)(?'keepamt'\d?))";
+        public static string ValidDiceRollPattern = @"([0-9.]+)d([0-9.]+)(?>k?(?'keep'[l|h]?)(?'keepamt'\d?))";
         private RandomCSP _roller;
 
         public Dice()
@@ -15,6 +16,7 @@ namespace DiceRoller
 
         public RollResult Roll(string infixEquation)
         {
+            string display = infixEquation;
             RollResult result = new RollResult();
 
             try
@@ -23,19 +25,27 @@ namespace DiceRoller
                 foreach (Match match in matchCollection)
                 {
                     var options = ParseOptions(match);
-                    var rollResult = _roller.RollDice(options);
+                    var roll = _roller.RollDice(options.dice, options.sides);
+                    var total = roll.Sum();
+                    var rollNumbers = $"[{String.Join('+', roll)}]";
+
+                    // todo, handle keep H/L
 
                     var subInValue = new Regex(Regex.Escape(match.Value));
-                    infixEquation = subInValue.Replace(infixEquation, rollResult.Answer.ToString(), 1);
+                    infixEquation = subInValue.Replace(infixEquation, total.ToString(), 1);
+                    display = subInValue.Replace(display, rollNumbers, 1);
                 }
 
-                result = Calculator.Evaluate(infixEquation);
+                var answer = Calculator.Evaluate(infixEquation);
+                result.Answer = answer;
+                result.Equation = infixEquation;
+                result.EquationDisplay = display;
             }
             catch (Exception ex)
             {
                 Console.WriteLine(ex.Message);
                 result.Error = true;
-                result.ErrorMessage = "Unexpected error";
+                result.ErrorMessage = ex.Message;
             }
 
             return result;
@@ -43,10 +53,19 @@ namespace DiceRoller
 
         private RollOptions ParseOptions(Match match)
         {
+            if (!int.TryParse(match.Groups[1].Value, out int dice))
+            {
+                throw new ArgumentException("number of dice must be an integer");
+            }
+            if (!int.TryParse(match.Groups[2].Value, out int sides))
+            {
+                throw new ArgumentException("number of sides must be an integer");
+            }
+
             RollOptions options = new RollOptions()
             {
-                dice = int.Parse(match.Groups[1].Value),
-                sides = int.Parse(match.Groups[2].Value)
+                dice = dice,
+                sides = sides
             };
 
             string keep = match.Groups["keep"].Value;
