@@ -43,7 +43,7 @@ namespace Discord.Bot.DiceRoller.Modules
             string reply = string.Format("{0} rolling: `{1}` \n {2} = {3}",
                 username,
                 command,
-                length < 1900 ? "`" + equation + "` \n" : string.Empty,
+                length < 1900 ? equation.Replace("*", "\\*") + "\n" : string.Empty,
                 answer);
 
             // last ditch effort to give a result

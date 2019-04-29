@@ -2,6 +2,7 @@
 {
     enum Keep
     {
+        All,
         Lowest,
         Highest
     }
@@ -11,7 +12,7 @@
         public int dice;
         public int sides;
 
-        public Keep keep;
+        public Keep keep = Keep.All;
         public int keepAmt;
     }
 }

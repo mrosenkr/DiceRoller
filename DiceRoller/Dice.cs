@@ -1,5 +1,7 @@
 ﻿using System;
+using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Text.RegularExpressions;
 
 namespace DiceRoller
@@ -17,7 +19,7 @@ namespace DiceRoller
         public RollResult Roll(string infixEquation)
         {
             string display = infixEquation;
-            RollResult result = new RollResult();
+            var result = new RollResult();
 
             try
             {
@@ -26,10 +28,49 @@ namespace DiceRoller
                 {
                     var options = ParseOptions(match);
                     var roll = _roller.RollDice(options.dice, options.sides);
-                    var total = roll.Sum();
-                    var rollNumbers = $"[{String.Join('+', roll)}]";
 
-                    // todo, handle keep H/L
+                    if (options.keep != Keep.All && options.keepAmt > options.dice)
+                    {
+                        throw new ArgumentException("Keep amount exceeds number of dice");
+                    }
+
+                    int total = 0;
+                    string rollNumbers = string.Empty;
+
+                    if (options.keep == Keep.All)
+                    {
+                        total = roll.Sum();
+                        rollNumbers = $"[{String.Join('+', roll)}]";
+                    }
+                    else
+                    {
+                        List<int> keep;
+                        if (options.keep == Keep.Lowest)
+                        {
+                            keep = roll.OrderBy(i => i).Take(options.keepAmt).ToList();
+                        }
+                        else
+                        {
+                            keep = roll.OrderByDescending(i => i).Take(options.keepAmt).ToList();
+                        }
+                        total = keep.Sum();
+
+                        var numberDisplay = new List<string>(options.dice);
+                        foreach(var die in roll)
+                        {
+                            if (keep.Contains(die))
+                            {
+                                numberDisplay.Add($"{die.ToString()}");
+                                keep.Remove(die);
+                            }
+                            else
+                            {
+                                numberDisplay.Add($"||{die.ToString()}||");
+                            }
+                        }
+
+                        rollNumbers = $"[{String.Join('+', numberDisplay)}]";
+                    }
 
                     var subInValue = new Regex(Regex.Escape(match.Value));
                     infixEquation = subInValue.Replace(infixEquation, total.ToString(), 1);
@@ -76,6 +117,8 @@ namespace DiceRoller
             }
             return options;
         }
+
+        
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls
