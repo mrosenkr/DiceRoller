@@ -87,14 +87,23 @@ namespace Discord.Bot.DiceRoller
 
             if (message.HasStringPrefix("/", ref argPosition))
             {
-                var context = new SocketCommandContext(_client, message);
+                await ExecuteCommand(message, argPosition);
+            }
+            else if (message.HasStringPrefix("!", ref argPosition))
+            {
+                await ExecuteCommand(message, argPosition);
+            }
+        }
 
-                var result = await _commands.ExecuteAsync(context, argPosition, _services);
+        private async Task ExecuteCommand(SocketUserMessage message, int argPosition)
+        {
+            var context = new SocketCommandContext(_client, message);
 
-                if (!result.IsSuccess)
-                {
-                    Console.WriteLine(result.ErrorReason);
-                }
+            var result = await _commands.ExecuteAsync(context, argPosition, _services);
+
+            if (!result.IsSuccess)
+            {
+                Console.WriteLine(result.ErrorReason);
             }
         }
     }

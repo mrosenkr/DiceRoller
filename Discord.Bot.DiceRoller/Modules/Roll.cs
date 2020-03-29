@@ -13,8 +13,9 @@ namespace Discord.Bot.DiceRoller.Modules
             _dice = dice;
         }
 
+        [Alias("r")]
         [Command("roll")]
-        public async Task RollAsync(string command)
+        public async Task RollAynsc(string command, params string[] args)
         {
             var result = _dice.Roll(command);
             string reply;
