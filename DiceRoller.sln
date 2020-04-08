@@ -11,7 +11,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiceRoller", "DiceRoller\Di
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "DiceRoller.Tests", "DiceRoller.Tests\DiceRoller.Tests.csproj", "{64E0C6D0-A29D-49AC-B58C-873ECF7F2363}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Discord.Bot.DiceRoller", "Discord.Bot.DiceRoller\Discord.Bot.DiceRoller.csproj", "{F5825BA2-5717-4284-B8EF-4C31071FD9B4}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Discord.Bot.DiceRoller", "Discord.Bot.DiceRoller\Discord.Bot.DiceRoller.csproj", "{F5825BA2-5717-4284-B8EF-4C31071FD9B4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

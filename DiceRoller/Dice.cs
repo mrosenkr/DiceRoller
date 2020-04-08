@@ -1,18 +1,20 @@
-﻿using System;
+﻿using DiceRoller.Models;
+using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Text;
 using System.Text.RegularExpressions;
 
 namespace DiceRoller
 {
     public class Dice : IDisposable
     {
-        public static string ValidDiceRollPattern = @"([0-9.]+)d([0-9.]+)(?>k?(?'keep'[l|h]?)(?'keepamt'\d?))";
+        private IDiceStats _stats;
+        private static readonly string ValidDiceRollPattern = @"([0-9.]+)d([0-9.]+)(?>k?(?'keep'[l|h]?)(?'keepamt'\d?))";
         private RandomCSP _roller;
 
-        public Dice()
+        public Dice(IDiceStats stats)
         {
+            this._stats = stats;
             _roller = new RandomCSP();
         }
 
@@ -28,6 +30,11 @@ namespace DiceRoller
                 {
                     var options = ParseOptions(match);
                     var roll = _roller.RollDice(options.dice, options.sides);
+
+                    foreach (var die in roll)
+                    {
+                        _stats.AddDieResult(options.sides, die);
+                    }
 
                     if (options.keep != Keep.All && options.keepAmt > options.dice)
                     {
@@ -56,7 +63,7 @@ namespace DiceRoller
                         total = keep.Sum();
 
                         var numberDisplay = new List<string>(options.dice);
-                        foreach(var die in roll)
+                        foreach (var die in roll)
                         {
                             if (keep.Contains(die))
                             {
@@ -118,7 +125,6 @@ namespace DiceRoller
             return options;
         }
 
-        
 
         #region IDisposable Support
         private bool disposedValue = false; // To detect redundant calls

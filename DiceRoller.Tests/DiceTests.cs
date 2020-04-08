@@ -1,4 +1,5 @@
-﻿using Xunit;
+﻿using DiceRoller.Models;
+using Xunit;
 
 namespace DiceRoller.Tests
 {
@@ -8,7 +9,8 @@ namespace DiceRoller.Tests
 
         public DiceTests()
         {
-            _dice = new Dice();
+            var stats = new DiceStats();
+            _dice = new Dice(stats);
         }
 
         [Theory]
